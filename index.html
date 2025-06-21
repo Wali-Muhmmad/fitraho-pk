@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5Wo8s-Sx5h_uNs7gQe6fTGacepYm5KkE",
+      authDomain: "fitraho-pk786.firebaseapp.com",
+      projectId: "fitraho-pk786",
+      storageBucket: "fitraho-pk786.firebasestorage.app",
+      messagingSenderId: "256149441770",
+      appId: "1:256149441770:web:8e40900e5fb49a3e361b93"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <!-- Meta Tags -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fitness Tracker</title>
+
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- AOS Animations -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" />
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="nav.css" />
+  <link rel="stylesheet" href="darkmode.css" />
+
+  <style>
+    /* Add perspective to body for 3D depth */
+    body {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+    }
+
+    /* Hero Section 3D Styling */
+    .hero {
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+      transform: rotateX(5deg) rotateY(-5deg);
+    }
+    .hero:hover {
+      transform: rotateX(0deg) rotateY(0deg) scale(1.05);
+      cursor: pointer;
+    }
+
+    /* Hero Button 3D effect */
+    .hero-btn {
+      transform-style: preserve-3d;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 10px rgba(255, 75, 43, 0.6);
+      cursor: pointer;
+    }
+    .hero-btn:hover {
+      transform: translateZ(20px) scale(1.1);
+      box-shadow: 0 12px 20px rgba(255, 75, 43, 0.8);
+    }
+
+    /* Navbar 3D tilt on hover */
+    nav.navbar {
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease;
+    }
+    nav.navbar:hover {
+      transform: rotateX(4deg) rotateY(6deg);
+    }
+
+    /* Buttons 3D hover effect */
+    button {
+      transform-style: preserve-3d;
+      transition: transform 0.3s ease;
+    }
+    button:hover {
+      transform: translateY(-3px) translateZ(10px);
+      box-shadow: 0 12px 25px rgba(0,198,255,0.7);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="loading">
+
+  <!-- ✅ Preloader -->
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ✅ Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <h1 class="logo">Fitraho.pk</h1>
+      <ul class="nav-links">
+        <li><a href="#login-section">Login</a></li>
+        <li><a href="#result-section">Result</a></li>
+        <li><a href="#exercise-section">Exercise</a></li>
+        <li><a href="#diet-section">Diet</a></li>
+        <li><a href="#blog-section">Blog</a></li>
+        <li><a href="#contact-section">Contact</a></li>
+        <li><a href="#About-section">About</a></li>
+       
+      </ul>
+      <div class="menu-icon">
+        <i class="fas fa-bars"></i>
+      </div>
+      <div class="dark-toggle">
+        <i class="fas fa-moon"></i>
+      </div>
+      <button id="darkModeToggle" class="dark-toggle">
+        <i class="fas fa-moon"></i> Dark Mode
+      </button>
+    </div>
+  </nav>
+
+  <!-- ✅ Hero Section -->
+  <section class="hero" data-aos="zoom-in">
+    <h1>Your Health Journey Starts Here 💪<br><img src="assets/recomen.jpg" alt="recomen Image" width="300"></h1>
+    <p>Your personal fitness trainer & health planner </p>
+    <button class="hero-btn" id="startJourneyBtn">Start Your Journey</button>
+  </section>
+
+  <!-- ✅ Login Section -->
+  <section id="login-section" data-aos="fade-up">
+    <div class="login-overlay">
+      <h2>Login</h2>
+      <input type="email" id="email" placeholder="Email de bhai">
+      <input type="password" id="password" placeholder=" chal ab Password likh">
+      <button onclick="login()">Login karo </button>
+      <button id="googleLoginBtn">Google se karlo </button>
+    </div>
+  </section>
+
+  <!-- ✅ Input Section -->
+  <section id="input-section" style="display:none;" data-aos="fade-up">
+    <h2>Enter Your Details</h2>
+    <img src="assets/age.jpg" alt="Age Image" width="400">
+    <input type="number" id="age" placeholder="Your Age">
+    <input type="number" id="weight" placeholder="Your Weight (kg)">
+    <button onclick="submitDetails()">Submit</button>
+  </section>
+
+  <!-- ✅ Recommendation Section -->
+  <section id="result-section" style="display:none;" data-aos="fade-up">
+    <h2 id="result-msg"></h2>
+    <img src="assets/recomen.jpg" alt="Recommendation Image" width="400">
+  </section>
+
+  <!-- ✅ Exercise Section -->
+  <section id="exercise-section" style="display:none;" data-aos="fade-up">
+    <h2>Exercise Plan</h2>
+    <img src="assets/gym.jpg" alt="Gym Image" width="400">
+    <ul id="exercise-list"></ul>
+  </section>
+
+  <!-- ✅ Diet Section -->
+  <section id="diet-section" style="display:none;" data-aos="fade-up">
+    <h2>Diet Plan</h2>
+    <img src="assets/diet.jpg" alt="Diet Image" width="400">
+    <ul id="diet-list"></ul>
+  </section>
+
+<!-- ✅ Blog section -->
+ <section id="blog-section" data-aos="fade-up">
+  <h2>Fitness Tips & Blog</h2>
+  <article>
+    <h3>How to Stay Motivated</h3>
+    <small>June 20, 2025</small>
+    <p>Consistency is key! Set small achievable goals and track your progress daily.</p>
+  </article>
+  <article>
+    <h3>Best Exercises for Beginners</h3>
+    <small>June 18, 2025</small>
+    <p>Start with simple bodyweight exercises like push-ups, squats and jogging.</p>
+  </article>
+  <!-- Add more articles as needed -->
+</section>
+
+<!-- ✅ About Section -->
+ <section id="About-section" data-aos="fade-up">
+  <h2>About Fitraho.pk</h2>
+  <p><strong>Fitraho.pk</strong> is your personal fitness guide — built to help you track your age, weight, and get a custom fitness plan based on your current stats. It gives you diet and exercise suggestions to keep you fit and healthy.</p>
+
+  <p>This app was created by <strong>Wali Muhammad</strong> as a part of a fitness motivation initiative.</p>
+  
+    
+    <i class="fas fa-envelope"></i> Email: <a href="mailto:your.email">walim55499@gmail.com</a><br>
+    <i class="fab fa-github"></i> GitHub: <a href="https://github.com/" target="_blank">github.com/Wali-Muhammad</a><br>
+    <i class="fab fa-linkedin"></i> LinkedIn: <a href="https://www.linkedin.com/" target="_blank">www.linkedin.com/in/wali-muhammad-b60195361</a>
+
+  </ul>
+</section>
+
+<!-- ✅ contact section -->
+ <section id="contact-section" data-aos="fade-up">
+  <h2>Contact Us</h2>
+  <form id="contactForm">
+    <input type="text" id="contactName" placeholder="Your Name" required />
+    <input type="email" id="contactEmail" placeholder="Your Email" required />
+    <textarea id="contactMessage" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+  <p id="contactStatus"></p>
+</section>
+
+  <!-- ✅ AOS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
+
+  <!-- ✅ Scripts -->
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const startBtn = document.getElementById('startJourneyBtn');
+      if (startBtn) {
+        startBtn.addEventListener('click', () => {
+          alert("Neechy login karo");
+          // Yahan apna logic add karein
+        });
+      }
+    });
+
+    window.addEventListener('load', () => {
+      document.body.classList.remove('loading');
+      document.getElementById('preloader').style.display = 'none';
+    });
+
+    document.querySelector(".menu-icon").addEventListener("click", () => {
+      document.querySelector(".nav-links").classList.toggle("active");
+    });
+
+    document.querySelector(".dark-toggle").addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const darkToggleBtn = document.getElementById("darkModeToggle");
+
+      // Check and apply saved mode
+      if (localStorage.getItem("dark-mode") === "enabled") {
+        document.body.classList.add("dark-mode");
+      }
+
+      darkToggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+
+        // Save preference in local storage
+        if (document.body.classList.contains("dark-mode")) {
+          localStorage.setItem("dark-mode", "enabled");
+        } else {
+          localStorage.setItem("dark-mode", "disabled");
+        }
+      });
+    });
+
+    <!-- ✅ Scripts -->
+   const contactForm = document.getElementById('contactForm');
+  const contactStatus = document.getElementById('contactStatus');
+
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    // For demo, just show success message
+    contactStatus.textContent = "Thank you for contacting us! We'll get back to you soon.";
+    contactForm.reset();
+
+    // For real app, integrate Firebase or EmailJS or server-side mailer here.
+  });
+</script>
+
+</body>
+</html>
