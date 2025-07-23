@@ -1,4 +1,5 @@
 // Firebase Auth object
+//
 const auth = firebase.auth();
 
 // Google Auth Provider object

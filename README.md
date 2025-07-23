@@ -1,4 +1,4 @@
-# Fitraho.pk 💪
+# Fitraho.pk 
 
 A modern fitness tracking website with personalized health recommendations, built with HTML, CSS, and JavaScript — fully responsive and integrated with Firebase Authentication.
 
