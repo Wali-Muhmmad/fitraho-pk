@@ -33,12 +33,5 @@ Feel free to connect or contribute! 😊
 
 ---
 
-## 📷 Screenshots 
 
-*(![light mode](image.png))*
-*(![Dark mode](image-1.png))*
-*(![login section](image-2.png))*
-*(![Blog section](image-3.png))*
-*![About section](image-4.png)
-*(![contact section](image-5.png))* 
 
